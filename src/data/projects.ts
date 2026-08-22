@@ -94,7 +94,7 @@ export const projects: Project[] = [
       successCriteria: [
         "One unified ridership table that planning and budget could both quote",
         "Forecast written back to the database and consumed in Power BI",
-        "Levers for span, hours, miles, and demographic scenarios",
+        "Levers for span, hours, miles, population, and jobs",
         "A five-year operating-cost view of the planned service (Oct–Sep fiscal years)",
       ],
     },
@@ -223,11 +223,11 @@ pred = np.expm1(struct_model.predict(future[service]))`,
       deliverables: [
         "Power BI report on the database — planners, schedulers, budget, executives",
         "Route-level forecast with type filters (local, limited, express, BRT, light rail)",
-        "Levers for span, service hours, service miles, and demographic change",
+        "Levers for span, service hours, service miles, population, and jobs",
         "Five-year operating-cost table for the planned network (FY Oct–Sep)",
       ],
       notes:
-        "Production is daily XGBoost; this graph is a monthly rollup on a 32-route synthetic network. Near-term (12 months) is a forecast. Beyond that is a scenario. We tested gas prices, headway as a distinct factor, and two-year OD patterns; they were not statistically significant on historical records, so they are documented, not shipped. Demographic sliders here are scenario factors — stop-area demographics were a weak driver compared with service supply.",
+        "Production is daily XGBoost; this graph is a monthly rollup on a 32-route synthetic network. Near-term (12 months) is a forecast. Beyond that is a scenario. We tested gas prices, headway as a distinct factor, and two-year OD patterns; they were not statistically significant on historical records, so they are documented, not shipped. Population and jobs sliders here are scenario factors — stop-area demographics were a weak driver compared with service supply.",
     },
     results: {
       operational: [

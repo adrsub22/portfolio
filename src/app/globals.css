@@ -355,6 +355,24 @@ pre {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
+.controls-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.reset-knobs {
+  font: inherit;
+  font-size: 13px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  cursor: pointer;
+}
+
+.reset-knobs:hover {
+  border-color: var(--ink);
+}
+
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -579,6 +597,7 @@ input[type="range"] {
   .grid-2,
   .controls,
   .controls-4,
+  .controls-5,
   .filters,
   .kpi-row,
   .kpi-row-4,
