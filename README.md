@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal site for about, projects, resume, and notes. Projects share a seven-section case-study template. Interactive pieces (starting with a transit ridership scenario planner) live inside a project, not as a separate app.
+Personal site highlighting projects, resume, and notes. Project samples share a seven-section case-study template. Interactive pieces (starting with a transit ridership scenario planner) live inside a project, not as a separate app.
 
 ## Run locally
 
