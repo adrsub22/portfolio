@@ -35,6 +35,7 @@ export type Project = {
     dimensions: string[];
     metrics: { name: string; definition: string }[];
     governance: string[];
+    takeaways?: { title: string; body: string }[];
   };
   pipeline?: {
     ingestion: string[];
@@ -145,6 +146,24 @@ export const projects: Project[] = [
         "Horizon labels: actual, short-term forecast (one year from model run), scenario thereafter",
         "Fiscal year starts October 1; this site uses 32 named routes and monthly totals — not the production list or daily grain",
       ],
+      takeaways: [
+        {
+          title: "Near-term is momentum",
+          body: "For the rolling year, XGBoost leaned on last week and the last 28 days of ridership. That is why the next 12 months are labeled a forecast: the best predictor of Tuesday is last Tuesday, given the route still runs.",
+        },
+        {
+          title: "Long-range is service",
+          body: "Lags cannot be known five years out, and new or consolidated routes have no history. The structural model therefore used span, revenue hours, trip count, and miles — the same levers planners actually change in GTFS.",
+        },
+        {
+          title: "What it was not saying",
+          body: "Gas prices, headway as a separate knob from hours, and two-year OD patterns were tested and did not add a stable, significant signal. They are in the diagnostics so an analyst can see they were tried, not ignored.",
+        },
+        {
+          title: "How we scored it",
+          body: "Target was log1p(boardings) so small routes were not drowned by rail. Validation was expanding-window time-series CV (train on the past, test the next slice) — not a random shuffle, which would leak the future.",
+        },
+      ],
     },
     pipeline: {
       ingestion: [
@@ -182,6 +201,21 @@ union all
 select route_id, service_date,
        boardings * (1 + @apc_undercount_pct)
 from silver.farebox_clean;`,
+        },
+        {
+          language: "Python",
+          caption: "Two XGBoost fits: lag-rich forecast vs structural scenario",
+          code: `y = np.log1p(df["boardings"])
+lag_model.fit(X[lags + service], y)      # next 12 months
+struct_model.fit(X[service], y)          # FY+2 and beyond
+# route-day prediction; Power BI rolls to month / FY`,
+        },
+        {
+          language: "Python",
+          caption: "What the structural model actually used",
+          code: `service = ["span_hours", "revenue_hours", "trip_count", "revenue_miles"]
+# tested, not shipped: gas_price, headway_peak, od_share_2yr
+pred = np.expm1(struct_model.predict(future[service]))`,
         },
       ],
     },

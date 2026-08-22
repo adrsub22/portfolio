@@ -109,7 +109,7 @@ export function monthsInRange(
   return out;
 }
 
-export const chartMonths = monthsInRange({ year: 2024, month: 1 }, { year: 2031, month: 9 });
+export const chartMonths = monthsInRange({ year: 2023, month: 10 }, { year: 2031, month: 9 });
 
 export type Levers = {
   span: number;
@@ -177,17 +177,36 @@ export function seriesFor(
   });
 }
 
-export function fiscalTotals(
+export function fyRollup(
   rows: { month: MonthPoint; riders: number; hours: number; cost: number }[],
 ) {
-  const fys = [2027, 2028, 2029, 2030, 2031];
-  return fys.map((fy) => {
-    const slice = rows.filter((r) => r.month.fy === fy);
-    return {
+  const byFy = new Map<
+    number,
+    { fy: number; riders: number; hours: number; cost: number; horizons: Set<Horizon> }
+  >();
+  for (const row of rows) {
+    const fy = row.month.fy;
+    const cur = byFy.get(fy) ?? {
       fy,
-      riders: slice.reduce((a, b) => a + b.riders, 0),
-      hours: slice.reduce((a, b) => a + b.hours, 0),
-      cost: slice.reduce((a, b) => a + b.cost, 0),
+      riders: 0,
+      hours: 0,
+      cost: 0,
+      horizons: new Set<Horizon>(),
     };
+    cur.riders += row.riders;
+    cur.hours += row.hours;
+    cur.cost += row.cost;
+    cur.horizons.add(row.month.horizon);
+    byFy.set(fy, cur);
+  }
+
+  const ordered = [...byFy.values()].sort((a, b) => a.fy - b.fy);
+  return ordered.map((row, i) => {
+    const prev = ordered[i - 1];
+    const yoy = prev ? (row.riders - prev.riders) / prev.riders : null;
+    let band: Horizon | "blended" = "actual";
+    if (row.horizons.size === 1) band = [...row.horizons][0];
+    else band = "blended";
+    return { ...row, yoy, band, historical: row.horizons.has("actual") && !row.horizons.has("scenario") };
   });
 }
