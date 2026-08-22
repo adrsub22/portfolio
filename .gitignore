@@ -5,3 +5,5 @@ out
 *.log
 .env*.local
 .vercel
+.inspect-forecast
+portfolio projects
