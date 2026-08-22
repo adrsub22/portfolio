@@ -234,8 +234,8 @@ export function RidershipPlanner() {
       <p className="kicker">Interactive · scaled demo</p>
       <h3>Route scenario workspace</h3>
       <p className="muted">
-        Filter by service type or route, then change span, hours, miles, and
-        demographics. Hover the chart for month and fiscal year. Actuals stop at
+        Filter by service type or route, then change span, hours, miles,
+        population, and jobs. Hover the chart for month and fiscal year. Actuals stop at
         Aug 2026. The next 12 months are a short-term forecast; everything after
         that is a scenario. Fiscal years run October–September. Monthly rollups
         stand in for the production daily XGBoost grain.
@@ -269,13 +269,14 @@ export function RidershipPlanner() {
         </label>
       </div>
 
-      <div className="controls controls-4">
+      <div className="controls controls-5">
         {(
           [
             ["span", "Span of service", levers.span],
             ["hours", "Service hours", levers.hours],
             ["miles", "Service miles", levers.miles],
-            ["demo", "Demographics", levers.demo],
+            ["population", "Population", levers.population],
+            ["jobs", "Jobs", levers.jobs],
           ] as const
         ).map(([key, label, value]) => (
           <label key={key}>
@@ -290,6 +291,13 @@ export function RidershipPlanner() {
           </label>
         ))}
       </div>
+      <button
+        type="button"
+        className="reset-knobs"
+        onClick={() => setLevers(defaultLevers)}
+      >
+        Reset knobs to 0%
+      </button>
 
       <div className="legend">
         <span>

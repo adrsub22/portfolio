@@ -115,10 +115,17 @@ export type Levers = {
   span: number;
   hours: number;
   miles: number;
-  demo: number;
+  population: number;
+  jobs: number;
 };
 
-export const defaultLevers: Levers = { span: 0, hours: 0, miles: 0, demo: 0 };
+export const defaultLevers: Levers = {
+  span: 0,
+  hours: 0,
+  miles: 0,
+  population: 0,
+  jobs: 0,
+};
 
 function season(month: number) {
   const dip = month === 12 || month === 1 ? 0.9 : month === 7 || month === 8 ? 0.94 : 1;
@@ -157,7 +164,8 @@ export function seriesFor(
     0.55 * (levers.hours / 100) +
     0.12 * (levers.miles / 100) +
     0.18 * (levers.span / 100) +
-    0.22 * (levers.demo / 100);
+    0.14 * (levers.population / 100) +
+    0.10 * (levers.jobs / 100);
 
   return chartMonths.map((month) => {
     let riders = 0;
