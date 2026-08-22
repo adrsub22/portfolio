@@ -160,6 +160,21 @@ export function ProjectTemplate({ project }: { project: Project }) {
                 <li key={c}>{c}</li>
               ))}
             </ul>
+            {project.modeling.takeaways && (
+              <>
+                <h3>What the model was telling us</h3>
+                <p className="muted">
+                  Plain-language readout for analysts. Production is daily
+                  XGBoost; snippets below are the shape of the fit, not the
+                  agency notebook.
+                </p>
+                {project.modeling.takeaways.map((t) => (
+                  <p key={t.title}>
+                    <strong>{t.title}.</strong> {t.body}
+                  </p>
+                ))}
+              </>
+            )}
           </>
         ) : (
           <p className="placeholder">Schema, metrics, and governance TBD.</p>

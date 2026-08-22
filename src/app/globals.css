@@ -371,11 +371,89 @@ pre {
   margin-right: 6px;
 }
 
+.chart-wrap {
+  position: relative;
+  margin-top: 8px;
+}
+
 .chart {
   width: 100%;
   height: auto;
   background: #fff;
   border: 1px solid var(--line);
+}
+
+.chart-title,
+.axis-name,
+.tick {
+  font-family: "IBM Plex Mono", monospace;
+  fill: var(--ink-soft);
+}
+
+.chart-title {
+  font-size: 11px;
+}
+
+.axis-name {
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.tick {
+  font-size: 9px;
+}
+
+.tick.left {
+  text-anchor: end;
+}
+
+.tick.right {
+  text-anchor: start;
+}
+
+.tick.x {
+  text-anchor: middle;
+}
+
+.grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart-tooltip {
+  position: absolute;
+  top: 32px;
+  transform: translateX(-50%);
+  background: var(--code);
+  color: #f3eee4;
+  padding: 8px 10px;
+  font-size: 12px;
+  pointer-events: none;
+  min-width: 150px;
+  z-index: 2;
+}
+
+.chart-tooltip strong,
+.chart-tooltip span {
+  display: block;
+}
+
+.legend i.dash {
+  height: 3px;
+  width: 16px;
+  vertical-align: middle;
+}
+
+.fy-table tr.hist td {
+  background: #f7f3ea;
+}
+
+.yoy-pos {
+  color: var(--accent-2);
+}
+
+.yoy-neg {
+  color: var(--accent);
 }
 
 .fy-table {
