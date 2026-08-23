@@ -1,10 +1,11 @@
 export const site = {
-  name: "Andrew",
-  role: "Analytics engineering & decision systems",
+  name: "Andrew Reyna",
+  role: "Data Analytics and Engineering",
   location: "United States",
   email: "hello@example.com",
   tagline:
-    "I turn messy operational data into trusted metrics, models, and tools that people actually use.",
+    "I turn messy operational data into trusted metrics, models, and tools that stakeholders use to inform their decisions.",
+  copyright: "© Andrew Reyna 2026–2027",
 };
 
 export const nav = [

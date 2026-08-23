@@ -32,9 +32,7 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <p className="sidebar-foot">
-        Skeleton site. Content and live project assets still to land.
-      </p>
+      <p className="sidebar-foot">{site.copyright}</p>
     </aside>
   );
 }
