@@ -1,6 +1,7 @@
 import { projectSectionNav } from "@/data/site";
 import type { Project } from "@/data/projects";
 import { RidershipPlanner } from "@/components/RidershipPlanner";
+import { TripPatternsDemo } from "@/components/TripPatternsDemo";
 
 function Block({
   id,
@@ -164,9 +165,8 @@ export function ProjectTemplate({ project }: { project: Project }) {
               <>
                 <h3>What the model was telling us</h3>
                 <p className="muted">
-                  Plain-language readout for analysts. Production is daily
-                  XGBoost; snippets below are the shape of the fit, not the
-                  agency notebook.
+                  Plain-language readout for analysts. Snippets below are the
+                  shape of the fit, not the agency notebook.
                 </p>
                 {project.modeling.takeaways.map((t) => (
                   <p key={t.title}>
@@ -238,6 +238,7 @@ export function ProjectTemplate({ project }: { project: Project }) {
           </p>
         )}
         {project.interactive === "ridership-scenario" && <RidershipPlanner />}
+        {project.interactive === "trip-patterns" && <TripPatternsDemo />}
       </Block>
 
       <Block id="results" n="07" title="Results & Impact">

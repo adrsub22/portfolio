@@ -70,9 +70,10 @@ a {
 
 .brand-name {
   font-family: Newsreader, Georgia, serif;
-  font-size: 28px;
+  font-size: 24px;
   margin: 6px 0 0;
   color: #f3eee4;
+  line-height: 1.15;
 }
 
 .brand-role {
@@ -156,6 +157,79 @@ h2 {
   font-size: 18px;
   color: var(--ink-soft);
   max-width: 46rem;
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: center;
+  margin: 8px 0 36px;
+}
+
+.about-photo-ring {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  padding: 4px;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.about-photo-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  overflow: hidden;
+  box-sizing: border-box;
+  background: var(--paper-2);
+  line-height: 0;
+}
+
+.about-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  border-radius: 50%;
+}
+
+.about-hero-copy h1 {
+  font-size: 34px;
+  margin: 0 0 14px;
+}
+
+.about-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.about-icon-card {
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  padding: 18px 16px;
+}
+
+.about-icon-mark {
+  width: 48px;
+  height: 48px;
+  color: var(--accent-2);
+  margin-bottom: 10px;
+}
+
+.about-icon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.about-icon-card h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
 }
 
 .grid-2 {
@@ -567,6 +641,159 @@ input[type="range"] {
   font-size: 14px;
 }
 
+.trip-demo {
+  margin-top: 16px;
+}
+
+.trip-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.trip-tabs button {
+  font: inherit;
+  font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  cursor: pointer;
+}
+
+.trip-tabs button.active {
+  border-color: var(--ink);
+  background: var(--code);
+  color: #f3eee4;
+}
+
+.trip-map {
+  width: 100%;
+  height: 360px;
+  border: 1px solid var(--line);
+  background: #e8e1d4;
+  margin: 12px 0;
+  z-index: 0;
+}
+
+.trip-map-loading {
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.trip-about-copy h4 {
+  margin: 0 0 8px;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 20px;
+}
+
+.trip-bars {
+  grid-template-columns: repeat(7, 1fr);
+  height: 160px;
+  align-items: end;
+  gap: 8px;
+}
+
+.trip-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.trip-bar-pair {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.trip-bar-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  flex: 1;
+  max-width: 22px;
+  gap: 4px;
+}
+
+.trip-bar-val {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  color: var(--ink-soft);
+  line-height: 1;
+  writing-mode: horizontal-tb;
+}
+
+.trip-bar-stack i {
+  width: 100%;
+  min-height: 4px;
+  display: block;
+}
+
+.trip-bar-stack i.bus {
+  background: var(--accent);
+}
+
+.trip-bar-stack i.walk {
+  background: var(--accent-2);
+}
+
+.trip-bar-col > span {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  color: var(--ink-soft);
+}
+
+.link-mix {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.adopt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.adopt-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 48px;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.adopt-track {
+  height: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.adopt-track i {
+  display: block;
+  height: 100%;
+  background: var(--accent-2);
+}
+
+.adopt-row b {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  text-align: right;
+}
+
 @media (max-width: 860px) {
   .shell {
     grid-template-columns: 1fr;
@@ -595,6 +822,8 @@ input[type="range"] {
   }
 
   .grid-2,
+  .about-hero,
+  .about-icons,
   .controls,
   .controls-4,
   .controls-5,
@@ -602,7 +831,12 @@ input[type="range"] {
   .kpi-row,
   .kpi-row-4,
   .dl div,
-  .project-row {
+  .project-row,
+  .adopt-row {
     grid-template-columns: 1fr;
+  }
+
+  .about-hero {
+    justify-items: start;
   }
 }

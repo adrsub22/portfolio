@@ -6,6 +6,7 @@ out
 .env*.local
 .vercel
 .inspect-forecast
+.inspect-transitapp
 portfolio projects
 How to edit this site.txt
 How to publish to GitHub.txt

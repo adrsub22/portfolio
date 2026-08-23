@@ -52,13 +52,13 @@ export type Project = {
     adoption: string[];
     lessons: string[];
   };
-  interactive?: "ridership-scenario";
+  interactive?: "ridership-scenario" | "trip-patterns";
 };
 
 export const projects: Project[] = [
   {
     slug: "transit-ridership-forecast",
-    title: "Transit ridership forecasting",
+    title: "Machine Learning Ridership Forecast",
     year: "2026",
     status: "live",
     tags: ["forecasting", "XGBoost", "GTFS", "scenario planning"],
@@ -249,6 +249,202 @@ pred = np.expm1(struct_model.predict(future[service]))`,
       ],
     },
     interactive: "ridership-scenario",
+  },
+  {
+    slug: "transit-app-trip-patterns",
+    title: "Transit App Trip Patterns",
+    year: "2025",
+    status: "live",
+    tags: ["ArcGIS", "OD analysis", "transfers", "automation"],
+    oneLiner:
+      "A scheduled Python-to-SQL-to-ArcGIS Online pipeline that turns massive mobile trip legs into 7-day OD and 31-day transfer layers planners can open in a web experience.",
+    summary: {
+      problem:
+        "Trip-planning app data arrived as a huge raw feed; planners could not see where riders started, ended, or transferred without drowning in point noise.",
+      who: "Service planning and operations.",
+      solution:
+        "Python loads into SQL, cleans and isolates bad legs, joins census block groups, aggregates to 7- and 31-day rollups, then an ArcGIS Pro publisher rebuilds hosted layers and overwrites ArcGIS Online on a Windows Task Scheduler job.",
+      outcome:
+        "Planners and operations could see origin–destination and transfer patterns across the network in an Experience Builder dashboard — without a dedicated enterprise GIS server.",
+      narrative:
+        "A metropolitan transit agency needed rider movement intelligence from a mobile trip-planning app: each record is a leg (origin, destination, route, mode, timestamps). The volume ruled out mapping every raw point in a public dashboard. I built the path from extract to Experience: load into SQL Server, clean and separate bad data, attach census block-group geography and demographics, aggregate to rolling 7-day OD flows and 31-day transfer hotspots (with a short data lag), then automate ArcGIS layer builds and portal overwrite so nobody re-publishes by hand. The portfolio demo below is a Leaflet stand-in with the same four pages — about, OD, transfers, adoption — on synthetic zones. Agency name withheld.",
+    },
+    problem: {
+      background:
+        "The trip-planning app produced trip-level legs at a scale that could not sit raw in a hosted feature layer for non-enterprise users. Planning still asked “where do riders go, and where do they transfer?” with one-off pulls. Census geography and demographic context lived in separate workflows.",
+      challenges: [
+        "Getting a massive raw extract into the reporting database reliably",
+        "Cleaning duplicates, incomplete trips, and unrealistic legs",
+        "Collapsing false same-route “transfers” and applying a 3-day lag",
+        "Prepping block-group OD and transfer aggregates that a browser map could draw",
+        "Publishing without a dedicated ArcGIS Enterprise GIS server",
+        "Automating refresh so layers did not go stale between analyst runs",
+      ],
+      stakeholders: ["Service planning", "Operations"],
+      successCriteria: [
+        "7-day OD and 31-day transfer products that refresh on a schedule",
+        "Hosted AGOL layers overwritten safely (refuse empty overwrites)",
+        "An Experience dashboard planners can open without GIS desktop",
+        "Clear filters for transfer types (bus↔bus, bus↔on-demand)",
+      ],
+    },
+    architecture: {
+      steps: [
+        "Python extract → SQL Server",
+        "Clean / isolate bad legs",
+        "Census block groups + demographics",
+        "7-day OD + 31-day transfer rollups",
+        "ArcGISPro.py → FGDB → AGOL overwrite",
+        "Experience Builder dashboard",
+      ],
+      sources: [
+        "Mobile trip-planning app leg extracts",
+        "SQL Server reporting database",
+        "Census block-group boundaries (and vintage crosswalks)",
+        "Jobs / population layers for context",
+        "APC monthly route ridership (adoption share table)",
+      ],
+      stack: [
+        "Python",
+        "SQL Server",
+        "pandas / pyodbc",
+        "ArcPy (ArcGIS Pro)",
+        "ArcGIS Online",
+        "Experience Builder",
+        "Windows Task Scheduler",
+        "Leaflet demo (this site)",
+      ],
+      decisions: [
+        {
+          q: "Why aggregate to 7 and 31 days?",
+          a: "Full raw geometry was too large for hosted layers without enterprise GIS. Rolling windows keep the map readable and the overwrite job predictable.",
+        },
+        {
+          q: "Why publish from ArcGIS Pro instead of editing AGOL row-by-row?",
+          a: "Feature-service overwrite from a built FGDB is faster and safer at this volume than thousands of REST edits. The publisher refuses empty overwrites so a bad run cannot wipe the portal.",
+        },
+        {
+          q: "Why Task Scheduler?",
+          a: "The same machine that runs ArcGIS Pro can rebuild and push layers overnight. Planners always open yesterday’s window, not last month’s one-off publish.",
+        },
+      ],
+    },
+    modeling: {
+      facts: [
+        "Fact_Leg_Trips (cleaned)",
+        "Fact_OD_BG_Daily (7-day window)",
+        "Fact_Transfer_Hotspots (31-day window)",
+      ],
+      dimensions: [
+        "Trip date",
+        "Origin / destination block group",
+        "Route / transfer pattern",
+        "Transfer type (bus–bus, bus–on-demand, on-demand–bus)",
+      ],
+      metrics: [
+        {
+          name: "OD trip volume",
+          definition: "Count of cleaned legs between origin and destination block groups in the rolling 7-day window.",
+        },
+        {
+          name: "Transfer count",
+          definition: "Journeys sharing a transfer stop and route pattern in the rolling 31-day window.",
+        },
+        {
+          name: "Wait / travel time",
+          definition: "Average gap (wait) and in-vehicle time/distance along transfer chains.",
+        },
+        {
+          name: "App adoption share",
+          definition: "Transit-app boardings as a share of APC monthly route ridership.",
+        },
+      ],
+      governance: [
+        "Deduplicate inserts; filter incomplete and unrealistic legs",
+        "Collapse false same-route transfers under a short gap threshold",
+        "3-day portal lag so late files do not redraw mid-window",
+        "Refuse AGOL overwrite when the local feature class has zero rows",
+        "This site uses synthetic zones — not production block groups or live counts",
+      ],
+      takeaways: [
+        {
+          title: "Aggregation is the product",
+          body: "The insight was never “draw every leg.” It was OD pairs and transfer hotspots at a grain a browser map and a planner can use.",
+        },
+        {
+          title: "Clean before you map",
+          body: "Duplicates, broken timestamps, and fake same-route transfers will invent corridors that do not exist. QA is spatial accuracy.",
+        },
+        {
+          title: "Publish is part of the pipeline",
+          body: "If the last step is a person clicking Share in Pro, the dashboard goes stale. Task Scheduler + overwrite made the Experience a living system.",
+        },
+      ],
+    },
+    pipeline: {
+      ingestion: [
+        "Python extract of trip-planning app legs into SQL Server",
+        "Incremental / rolling windows with overlap days to catch late arrivals",
+        "Census block-group boundaries and demographic joins",
+      ],
+      transformations: [
+        "Clean and isolate bad data; standardize route and stop fields",
+        "Build origin–destination pairs at block-group level (7-day)",
+        "Build transfer chains and hotspot points (31-day)",
+        "Materialize ArcGIS-ready tables for flows, transfers, walk egress",
+      ],
+      automation: [
+        "Windows Task Scheduler runs the job on a fixed cadence",
+        "ArcGISPro.py builds FGDB feature classes and overwrites AGOL hosted layers",
+        "Experience Builder reads the hosted services (no manual layer rebuild)",
+      ],
+      samples: [
+        {
+          language: "Python",
+          caption: "Load legs, then refuse an empty portal overwrite",
+          code: `legs = read_sql("dbo.TransitApp_Leg_Trips", window)
+od = aggregate_od(legs, days=7, lag_days=3)
+transfers = aggregate_transfers(legs, days=31, lag_days=3)
+if count_rows(od_fc) == 0:
+    raise RuntimeError("Refuse AGOL overwrite: empty OD layer")
+overwrite_agol(od_fc, "TransitApp7Day")`,
+        },
+        {
+          language: "SQL",
+          caption: "Window extract for dashboard-grade aggregates",
+          code: `select trip_date, origin_bg, dest_bg, route_no,
+       count(*) as trips,
+       avg(travel_min) as avg_min
+from transitapp.LegTrips_Clean
+where trip_date >= dateadd(day, -10, cast(getdate() as date))
+group by trip_date, origin_bg, dest_bg, route_no;`,
+        },
+      ],
+    },
+    analytics: {
+      deliverables: [
+        "ArcGIS Experience: About, 7-day OD, 31-day transfers, adoption",
+        "Hosted OD line / polygon layers and transfer hotspot points",
+        "Monthly route app-share table vs APC",
+        "Leaflet demo below (synthetic network, same page structure)",
+      ],
+      notes:
+        "Production is ArcGIS Online + Experience Builder. This page cannot host the live org layers, so the interactive below uses Leaflet, twelve synthetic zones, and scaled counts. Filters mimic the Experience: origin zone on OD, transfer type on transfers.",
+    },
+    results: {
+      operational: [
+        "Planners could see where riders were going to and from within the network",
+        "Operations could spot transfer hubs and bus↔on-demand handoffs",
+        "No dedicated enterprise GIS server required for the end-user experience",
+      ],
+      adoption: ["Service planning", "Operations"],
+      lessons: [
+        "Raw trip firehoses do not belong in a dashboard — rollups do.",
+        "Automated publish (and empty-overwrite guards) matter as much as the SQL.",
+        "A short data lag buys trust: better a stable window than a twitchy map.",
+      ],
+    },
+    interactive: "trip-patterns",
   },
   {
     slug: "executive-kpi-lakehouse",
