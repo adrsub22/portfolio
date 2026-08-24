@@ -56,6 +56,27 @@ function IconMap() {
   );
 }
 
+function IconMail() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className="contact-icon">
+      <rect x="3" y="5" width="18" height="14" rx="1.5" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
+
+function IconGitHub() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className="contact-icon contact-icon-github"
+    >
+      <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.5 9.5 0 0 1 12 7.01c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.58c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+    </svg>
+  );
+}
+
 const highlights = [
   {
     title: "Metrics & models",
@@ -141,32 +162,15 @@ export default function AboutPage() {
         <section className="about-detail-block">
           <h2>Contact</h2>
           <div className="about-contact-links">
-            <span>San Antonio, TX</span>
             <a href="mailto:andrewdreynadata@gmail.com">
+              <IconMail />
               andrewdreynadata@gmail.com
             </a>
-            <a href="https://github.com/adrsub22">github.com/adrsub22</a>
+            <a href="https://github.com/adrsub22">
+              <IconGitHub />
+              github.com/adrsub22
+            </a>
           </div>
-        </section>
-
-        <section className="about-detail-block">
-          <h2>How to Read This Site</h2>
-          <p>
-            The left navigation separates the site into four areas: About Me,
-            Projects, Resume, and Thoughts. Projects contains the detailed case
-            studies; Resume provides a concise career overview; and Thoughts is
-            reserved for shorter notes about data, analytics, and the work
-            behind the projects.
-          </p>
-          <p>
-            Each case study follows the same seven-part structure: Executive
-            Summary, Business Problem, Solution Architecture, Data Modeling,
-            Pipeline &amp; Engineering, Analytics &amp; Deliverables, and
-            Results &amp; Impact. The consistent format makes it easy to move
-            from the problem and stakeholders through the technical decisions
-            to the final outcome. Interactive demos use synthetic data so the
-            experience can be explored without exposing agency information.
-          </p>
         </section>
       </div>
     </>
