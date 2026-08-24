@@ -61,9 +61,15 @@ export const projects: Project[] = [
     title: "Machine Learning Ridership Forecast",
     year: "2026",
     status: "live",
-    tags: ["forecasting", "XGBoost", "GTFS", "scenario planning"],
+    tags: [
+      "Python",
+      "SQL Server",
+      "Machine Learning",
+      "Power BI",
+      "Decision Support",
+    ],
     oneLiner:
-      "An XGBoost ridership forecast, written back to the database and published in Power BI, so planning, scheduling, budget, and executives can price five fiscal years of planned service.",
+      "An XGBoost ridership forecast, written back to the database and published in Power BI, so users can price five fiscal years of planned service.",
     summary: {
       problem:
         "Farebox history and APC counts lived in different systems; nobody could change a route’s service plan and see demand and operating cost in the same report.",
@@ -255,9 +261,15 @@ pred = np.expm1(struct_model.predict(future[service]))`,
     title: "Transit App Trip Patterns",
     year: "2025",
     status: "live",
-    tags: ["ArcGIS", "OD analysis", "transfers", "automation"],
+    tags: [
+      "Python",
+      "SQL Server",
+      "ESRI",
+      "Data Automation",
+      "Geospatial Analytics",
+    ],
     oneLiner:
-      "A scheduled Python-to-SQL-to-ArcGIS Online pipeline that turns massive mobile trip legs into 7-day OD and 31-day transfer layers planners can open in a web experience.",
+      "A scheduled Python-to-SQL-to-ArcGIS Online pipeline that turns Transit app mobile trip data into 7-day travel and 31-day transfer patterns users can analyze in an ESRI web experience site.",
     summary: {
       problem:
         "Trip-planning app data arrived as a huge raw feed; planners could not see where riders started, ended, or transferred without drowning in point noise.",
@@ -445,38 +457,6 @@ group by trip_date, origin_bg, dest_bg, route_no;`,
       ],
     },
     interactive: "trip-patterns",
-  },
-  {
-    slug: "executive-kpi-lakehouse",
-    title: "Executive KPI lakehouse",
-    year: "2025",
-    status: "draft",
-    tags: ["lakehouse", "Power BI", "governance"],
-    oneLiner:
-      "A bronze–silver–gold path from operational systems to a semantic model leadership can quote.",
-    summary: {
-      problem: "Leadership lacked a trusted view of performance across multiple systems.",
-      who: "Executive leadership, planning, operations.",
-      solution: "Governed KPI datasets and Power BI dashboards on a medallion lakehouse.",
-      outcome: "One official scorecard used in planning and executive decision-making.",
-      narrative:
-        "Placeholder write-up. This card is here so the project grid already shows how thinner case studies will sit beside fuller ones.",
-    },
-  },
-  {
-    slug: "gis-service-equity",
-    title: "Service equity atlas",
-    year: "2025",
-    status: "draft",
-    tags: ["GIS", "equity", "ArcGIS"],
-    oneLiner: "Map coverage, wait time, and demand against community characteristics.",
-    summary: {
-      problem: "Coverage debates were anecdotal.",
-      who: "Planning and public-facing teams.",
-      solution: "A GIS layer stack joined to operational KPIs.",
-      outcome: "Shared maps for board and community conversations.",
-      narrative: "Placeholder. Spatial deliverables will live in Analytics & Deliverables once assets are ready.",
-    },
   },
 ];
 

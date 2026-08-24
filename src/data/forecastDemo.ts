@@ -127,6 +127,34 @@ export const defaultLevers: Levers = {
   jobs: 0,
 };
 
+export const scenarioFiscalYears = [2027, 2028, 2029, 2030, 2031] as const;
+
+/**
+ * Synthetic planned-service growth. Each factor is cumulative relative to the
+ * current network, so later fiscal years carry more revenue hours and cost.
+ */
+function plannedServiceFactor(fy: number) {
+  const factors: Record<number, number> = {
+    2027: 1.035,
+    2028: 1.075,
+    2029: 1.12,
+    2030: 1.17,
+    2031: 1.23,
+  };
+  return factors[fy] ?? (fy > 2031 ? factors[2031] : 1);
+}
+
+function costPerHourFactor(fy: number) {
+  const factors: Record<number, number> = {
+    2027: 1.03,
+    2028: 1.06,
+    2029: 1.09,
+    2030: 1.12,
+    2031: 1.16,
+  };
+  return factors[fy] ?? (fy > 2031 ? factors[2031] : 1);
+}
+
 function season(month: number) {
   const dip = month === 12 || month === 1 ? 0.9 : month === 7 || month === 8 ? 0.94 : 1;
   const spring = month === 4 || month === 5 ? 1.04 : 1;
@@ -157,9 +185,13 @@ export function filterRoutes(type: ServiceType | "all", routeId: string) {
 export function seriesFor(
   selected: DemoRoute[],
   levers: Levers,
+  selectedFiscalYears: ReadonlySet<number> = new Set(),
 ): { month: MonthPoint; riders: number; hours: number; cost: number }[] {
-    const hoursFactor = 1 + levers.hours / 100 + 0.25 * (levers.span / 100);
-    const ridershipLift =
+  const leverHoursFactor =
+    1 +
+    levers.hours / 100 +
+    0.25 * (levers.span / 100);
+  const leverRidershipLift =
     1 +
     0.55 * (levers.hours / 100) +
     0.12 * (levers.miles / 100) +
@@ -172,14 +204,29 @@ export function seriesFor(
     let hours = 0;
     let cost = 0;
     const future = month.horizon !== "actual";
+    const servicePlan = future ? plannedServiceFactor(month.fy) : 1;
+    const serviceRidershipLift = 1 + 0.55 * (servicePlan - 1);
+    const maturationLift =
+      month.horizon === "scenario"
+        ? 1 + Math.max(0, month.fy - 2027) * 0.012
+        : 1;
+    const applyLevers = future && selectedFiscalYears.has(month.fy);
+
     for (const r of selected) {
       const jitter = 0.96 + hash(r.id + month.key) * 0.08;
       const base =
         r.monthlyRiders * season(month.month) * recovery(month.year, month.month) * jitter;
-      const h = r.monthlyHours * (future ? hoursFactor : 1);
-      riders += base * (future ? ridershipLift : 1);
+      const h =
+        r.monthlyHours *
+        servicePlan *
+        (applyLevers ? leverHoursFactor : 1);
+      riders +=
+        base *
+        serviceRidershipLift *
+        maturationLift *
+        (applyLevers ? leverRidershipLift : 1);
       hours += h;
-      cost += h * r.costPerHour;
+      cost += h * r.costPerHour * (future ? costPerHourFactor(month.fy) : 1);
     }
     return { month, riders, hours, cost };
   });

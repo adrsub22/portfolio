@@ -7,11 +7,7 @@ export default function ProjectsPage() {
   return (
     <>
       <p className="kicker">Projects</p>
-      <h1>Case studies</h1>
-      <p className="lede">
-        Five or six projects will live here. Every one uses the same seven
-        sections so readers can compare how you think, not just what you built.
-      </p>
+      <h1>Case Studies</h1>
       <div className="project-list">
         {projects.map((p) => (
           <Link key={p.slug} href={`/projects/${p.slug}`} className="project-row">
@@ -27,7 +23,6 @@ export default function ProjectsPage() {
                 ))}
               </div>
             </div>
-            <span className="status">{p.status}</span>
           </Link>
         ))}
       </div>

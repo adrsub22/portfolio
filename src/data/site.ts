@@ -4,7 +4,7 @@ export const site = {
   location: "United States",
   email: "hello@example.com",
   tagline:
-    "I turn messy operational data into trusted metrics, models, and tools that stakeholders use to inform their decisions.",
+    "I turn messy operational data into trusted metrics, models, and tools that help people make better decisions.",
   copyright: "© Andrew Reyna 2026–2027",
 };
 
