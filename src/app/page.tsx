@@ -99,9 +99,8 @@ export default function AboutPage() {
         <div className="about-hero-copy">
           <h1>{site.tagline}</h1>
           <p className="lede">
-            I work across analytics engineering, data automation, and business
-            intelligence — transforming messy data into trusted analytical
-            products.
+            Analytics engineering, data automation, business intelligence,
+            forecasting, and spatial analysis.
           </p>
         </div>
       </div>
@@ -116,6 +115,59 @@ export default function AboutPage() {
             <p className="muted">{body}</p>
           </div>
         ))}
+      </div>
+
+      <div className="about-details">
+        <section className="about-detail-block">
+          <h2>More About Me</h2>
+          <p>
+            I’m a data analyst and analytics engineer who enjoys turning
+            complex data into practical tools and insights people can actually
+            use. My background in economics, finance, and urban planning has
+            shaped how I approach problems: I tend to look at the bigger
+            picture and think about how a solution can create value for the
+            greatest number of people. That perspective has followed me
+            throughout my career, whether I’m building data pipelines,
+            analytical models, dashboards, or automated workflows.
+          </p>
+          <p>
+            I live in San Antonio, Texas with my wife and daughter. Outside of
+            work, I enjoy traveling with my family, collecting vinyl,
+            photography, and reading science fiction whenever I can find the
+            time.
+          </p>
+        </section>
+
+        <section className="about-detail-block">
+          <h2>Contact</h2>
+          <div className="about-contact-links">
+            <span>San Antonio, TX</span>
+            <a href="mailto:andrewdreynadata@gmail.com">
+              andrewdreynadata@gmail.com
+            </a>
+            <a href="https://github.com/adrsub22">github.com/adrsub22</a>
+          </div>
+        </section>
+
+        <section className="about-detail-block">
+          <h2>How to Read This Site</h2>
+          <p>
+            The left navigation separates the site into four areas: About Me,
+            Projects, Resume, and Thoughts. Projects contains the detailed case
+            studies; Resume provides a concise career overview; and Thoughts is
+            reserved for shorter notes about data, analytics, and the work
+            behind the projects.
+          </p>
+          <p>
+            Each case study follows the same seven-part structure: Executive
+            Summary, Business Problem, Solution Architecture, Data Modeling,
+            Pipeline &amp; Engineering, Analytics &amp; Deliverables, and
+            Results &amp; Impact. The consistent format makes it easy to move
+            from the problem and stakeholders through the technical decisions
+            to the final outcome. Interactive demos use synthetic data so the
+            experience can be explored without exposing agency information.
+          </p>
+        </section>
       </div>
     </>
   );

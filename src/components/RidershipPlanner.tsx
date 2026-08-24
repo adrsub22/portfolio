@@ -7,6 +7,7 @@ import {
   filterRoutes,
   fyRollup,
   routes,
+  scenarioFiscalYears,
   seriesFor,
   serviceTypeLabel,
   serviceTypes,
@@ -205,11 +206,17 @@ export function RidershipPlanner() {
   const [type, setType] = useState<ServiceType | "all">("all");
   const [routeId, setRouteId] = useState("all");
   const [levers, setLevers] = useState<Levers>(defaultLevers);
+  const [selectedFys, setSelectedFys] = useState<number[]>([
+    ...scenarioFiscalYears,
+  ]);
 
   const typeRoutes = useMemo(() => filterRoutes(type, "all"), [type]);
   const selected = useMemo(() => filterRoutes(type, routeId), [type, routeId]);
   const baseline = useMemo(() => seriesFor(selected, defaultLevers), [selected]);
-  const scenario = useMemo(() => seriesFor(selected, levers), [selected, levers]);
+  const scenario = useMemo(
+    () => seriesFor(selected, levers, new Set(selectedFys)),
+    [selected, levers, selectedFys],
+  );
   const fys = useMemo(() => fyRollup(scenario), [scenario]);
   const baseFys = useMemo(() => fyRollup(baseline), [baseline]);
 
@@ -229,6 +236,14 @@ export function RidershipPlanner() {
     setRouteId("all");
   }
 
+  function toggleFiscalYear(fy: number) {
+    setSelectedFys((current) =>
+      current.includes(fy)
+        ? current.filter((year) => year !== fy)
+        : [...current, fy].sort(),
+    );
+  }
+
   return (
     <div className="planner">
       <p className="kicker">Interactive · scaled demo</p>
@@ -238,7 +253,9 @@ export function RidershipPlanner() {
         population, and jobs. Hover the chart for month and fiscal year. Actuals stop at
         Aug 2026. The next 12 months are a short-term forecast; everything after
         that is a scenario. Fiscal years run October–September. Monthly rollups
-        stand in for the production daily XGBoost grain.
+        stand in for the production daily XGBoost grain. The planned baseline
+        adds service over time; choose which fiscal years receive your scenario
+        adjustments.
       </p>
 
       <div className="filters">
@@ -291,13 +308,35 @@ export function RidershipPlanner() {
           </label>
         ))}
       </div>
-      <button
-        type="button"
-        className="reset-knobs"
-        onClick={() => setLevers(defaultLevers)}
-      >
-        Reset knobs to 0%
-      </button>
+      <fieldset className="fy-selector">
+        <legend>Apply levers to fiscal years</legend>
+        <div className="fy-selector-options">
+          {scenarioFiscalYears.map((fy) => (
+            <label key={fy}>
+              <input
+                type="checkbox"
+                checked={selectedFys.includes(fy)}
+                onChange={() => toggleFiscalYear(fy)}
+              />
+              FY{String(fy).slice(2)}
+            </label>
+          ))}
+        </div>
+        <div className="fy-selector-actions">
+          <button
+            type="button"
+            onClick={() => setSelectedFys([...scenarioFiscalYears])}
+          >
+            Select all
+          </button>
+          <button type="button" onClick={() => setSelectedFys([])}>
+            Clear years
+          </button>
+          <button type="button" onClick={() => setLevers(defaultLevers)}>
+            Reset knobs to 0%
+          </button>
+        </div>
+      </fieldset>
 
       <div className="legend">
         <span>
