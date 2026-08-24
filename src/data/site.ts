@@ -2,7 +2,7 @@ export const site = {
   name: "Andrew Reyna",
   role: "Data Analytics and Engineering",
   location: "United States",
-  email: "hello@example.com",
+  email: "andrewdreynadata@gmail.com",
   tagline:
     "I turn messy operational data into trusted metrics, models, and tools that help people make better decisions.",
   copyright: "© Andrew Reyna 2026–2027",
@@ -13,6 +13,7 @@ export const nav = [
   { href: "/projects", label: "Projects", id: "projects" },
   { href: "/resume", label: "Resume", id: "resume" },
   { href: "/thoughts", label: "Thoughts", id: "thoughts" },
+  { href: "/how-to-read", label: "How to Read", id: "how-to-read" },
 ] as const;
 
 export const projectSectionNav = [
