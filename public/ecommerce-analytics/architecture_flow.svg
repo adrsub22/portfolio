@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="460" viewBox="0 0 1800 460" role="img" aria-labelledby="title desc">
+  <title id="title">Governed E-Commerce Analytics: Side-by-Side dbt Modernization</title>
+  <desc id="desc">Deterministic Python generation flows through PostgreSQL core sources, dbt staging, conformed dimensions, facts and analytical intermediates, seven governed marts, and validation and presentation. The original analytics layer remains the unchanged reconciliation control.</desc>
+  <defs>
+    <style>
+      .title { font: 700 29px system-ui, sans-serif; fill: #17324d; }
+      .label { font: 700 16px system-ui, sans-serif; fill: #17324d; }
+      .sub { font: 14px system-ui, sans-serif; fill: #4b6277; }
+      .band-label { font: 700 15px system-ui, sans-serif; fill: #25445f; }
+      .band-sub { font: 14px system-ui, sans-serif; fill: #415d73; }
+      .box { stroke: #335f82; stroke-width: 2; rx: 14; }
+      .arrow { stroke: #68839a; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#68839a"/>
+    </marker>
+  </defs>
+
+  <rect width="1800" height="460" fill="#f7fafc"/>
+  <text x="900" y="48" text-anchor="middle" class="title">Governed E-Commerce Analytics: Side-by-Side dbt Modernization</text>
+
+  <g transform="translate(24 104)">
+    <rect class="box" width="210" height="142" fill="#e8f1f8"/>
+    <text x="105" y="43" text-anchor="middle" class="label">Python generation</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">Deterministic synthetic data</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">Fixed seed and as-of date</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Reproducible starter scale</text>
+  </g>
+  <path class="arrow" d="M242 175 H276"/>
+
+  <g transform="translate(284 104)">
+    <rect class="box" width="210" height="142" fill="#dcecf4"/>
+    <text x="105" y="43" text-anchor="middle" class="label">PostgreSQL core</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">13 normalized sources</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">Python-owned schemas</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Natural grains preserved</text>
+  </g>
+  <path class="arrow" d="M502 175 H536"/>
+
+  <g transform="translate(544 104)">
+    <rect class="box" width="210" height="142" fill="#e2edf8"/>
+    <text x="105" y="43" text-anchor="middle" class="label">dbt staging</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">13 source-aligned views</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">Typing and naming only</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Source freshness documented</text>
+  </g>
+  <path class="arrow" d="M762 175 H796"/>
+
+  <g transform="translate(804 104)">
+    <rect class="box" width="210" height="142" fill="#d6e8e2"/>
+    <text x="105" y="43" text-anchor="middle" class="label">Dimensions + context</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">5 conformed dimensions</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">2 reusable contexts</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Surrogate-key parity</text>
+  </g>
+  <path class="arrow" d="M1022 175 H1056"/>
+
+  <g transform="translate(1064 104)">
+    <rect class="box" width="210" height="142" fill="#dce9dc"/>
+    <text x="105" y="43" text-anchor="middle" class="label">Facts + analytics</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">6 business-process facts</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">4 analytical intermediates</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Explicit reusable grains</text>
+  </g>
+  <path class="arrow" d="M1282 175 H1316"/>
+
+  <g transform="translate(1324 104)">
+    <rect class="box" width="210" height="142" fill="#faecd2"/>
+    <text x="105" y="43" text-anchor="middle" class="label">7 governed marts</text>
+    <text x="105" y="72" text-anchor="middle" class="sub">Customer and cohort</text>
+    <text x="105" y="95" text-anchor="middle" class="sub">Product, sales, promotion</text>
+    <text x="105" y="118" text-anchor="middle" class="sub">Fulfillment and RFM</text>
+  </g>
+  <path class="arrow" d="M1542 175 H1576"/>
+
+  <g transform="translate(1584 104)">
+    <rect class="box" width="192" height="142" fill="#eee5f5"/>
+    <text x="96" y="43" text-anchor="middle" class="label">Validate + present</text>
+    <text x="96" y="72" text-anchor="middle" class="sub">215 dbt tests</text>
+    <text x="96" y="95" text-anchor="middle" class="sub">167 pytest / 375 DQ</text>
+    <text x="96" y="118" text-anchor="middle" class="sub">Docs and portfolio assets</text>
+  </g>
+
+  <rect x="284" y="306" width="1250" height="94" rx="16" fill="#edf3f7" stroke="#7d97aa" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="909" y="340" text-anchor="middle" class="band-label">Reconciliation control: original analytics schema retained side by side</text>
+  <text x="909" y="367" text-anchor="middle" class="band-sub">Existing dimensions, facts, and seven marts remain unchanged while analytics_dbt is proven at exact row, key, and value parity.</text>
+  <text x="909" y="389" text-anchor="middle" class="band-sub">No production cutover is claimed or required for this portfolio migration.</text>
+</svg>
