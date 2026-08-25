@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { projectSectionNav } from "@/data/site";
 import type { Project } from "@/data/projects";
 import { RidershipPlanner } from "@/components/RidershipPlanner";
 import { TripPatternsDemo } from "@/components/TripPatternsDemo";
+import { EcommerceAnalytics } from "@/components/EcommerceAnalytics";
 
 function Block({
   id,
@@ -36,6 +38,16 @@ export function ProjectTemplate({ project }: { project: Project }) {
       </p>
       <h1>{project.title}</h1>
       <p className="lede">{project.oneLiner}</p>
+      {project.disclaimer && (
+        <p className="muted project-disclaimer">{project.disclaimer}</p>
+      )}
+      {project.repoUrl && (
+        <p className="project-links">
+          <a href={project.repoUrl} target="_blank" rel="noreferrer">
+            GitHub repository
+          </a>
+        </p>
+      )}
       <nav className="section-nav" aria-label="Project sections">
         {projectSectionNav.map((item) => (
           <a key={item.id} href={`#${item.id}`}>
@@ -110,6 +122,21 @@ export function ProjectTemplate({ project }: { project: Project }) {
                 </span>
               ))}
             </div>
+            {project.architecture.visual && (
+              <figure className="ecom-figure architecture-figure">
+                <Image
+                  src={project.architecture.visual.src}
+                  alt={project.architecture.visual.alt}
+                  width={1800}
+                  height={460}
+                  unoptimized
+                  className="ecom-figure-img"
+                />
+                <figcaption className="muted">
+                  {project.architecture.visual.caption}
+                </figcaption>
+              </figure>
+            )}
             <h3>Data sources</h3>
             <ul className="plain">
               {project.architecture.sources.map((c) => (
@@ -163,10 +190,13 @@ export function ProjectTemplate({ project }: { project: Project }) {
             </ul>
             {project.modeling.takeaways && (
               <>
-                <h3>What the model was telling us</h3>
+                <h3>
+                  {project.modeling.takeawaysHeading ??
+                    "What the model was telling us"}
+                </h3>
                 <p className="muted">
-                  Plain-language readout for analysts. Snippets below are the
-                  shape of the fit, not the agency notebook.
+                  {project.modeling.takeawaysIntro ??
+                    "Plain-language readout for analysts. Snippets below are the shape of the fit, not the agency notebook."}
                 </p>
                 {project.modeling.takeaways.map((t) => (
                   <p key={t.title}>
@@ -239,6 +269,7 @@ export function ProjectTemplate({ project }: { project: Project }) {
         )}
         {project.interactive === "ridership-scenario" && <RidershipPlanner />}
         {project.interactive === "trip-patterns" && <TripPatternsDemo />}
+        {project.interactive === "ecommerce-analytics" && <EcommerceAnalytics />}
       </Block>
 
       <Block id="results" n="07" title="Results & Impact">

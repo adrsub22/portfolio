@@ -29,12 +29,15 @@ export type Project = {
     sources: string[];
     stack: string[];
     decisions: { q: string; a: string }[];
+    visual?: { src: string; alt: string; caption: string };
   };
   modeling?: {
     facts: string[];
     dimensions: string[];
     metrics: { name: string; definition: string }[];
     governance: string[];
+    takeawaysHeading?: string;
+    takeawaysIntro?: string;
     takeaways?: { title: string; body: string }[];
   };
   pipeline?: {
@@ -52,10 +55,232 @@ export type Project = {
     adoption: string[];
     lessons: string[];
   };
-  interactive?: "ridership-scenario" | "trip-patterns";
+  repoUrl?: string;
+  disclaimer?: string;
+  interactive?: "ridership-scenario" | "trip-patterns" | "ecommerce-analytics";
 };
 
 export const projects: Project[] = [
+  {
+    slug: "ecommerce-analytics-engineering",
+    title: "E-Commerce Analytics Engineering",
+    year: "2026",
+    status: "live",
+    tags: [
+      "Python",
+      "PostgreSQL",
+      "dbt",
+      "Dimensional Modeling",
+      "Data Quality",
+    ],
+    oneLiner:
+      "Built and validated a PostgreSQL analytical warehouse for a simulated e-commerce business, then modernized the transformation layer with dbt while preserving exact business logic and outputs.",
+    repoUrl:
+      "https://github.com/adrsub22/e-commerce-analytics-engineering",
+    disclaimer:
+      "This case study uses a deterministic synthetic dataset for a simulated e-commerce business. Findings demonstrate analytics-engineering methodology; they are not real-market behavior.",
+    summary: {
+      problem:
+        "A simulated retailer needed a governed warehouse for sales, customer, product, retention, promotion, and fulfillment analysis — then a way to introduce dbt without drifting validated metrics or keys.",
+      who: "A simulated merchandising, finance, and customer-analytics audience, plus technical reviewers of the migration.",
+      solution:
+        "Python generated and loaded 13 PostgreSQL source tables; SQL built a validated control warehouse; dbt reproduced staging, dimensions, facts, intermediates, and marts beside that control until outputs matched exactly.",
+      outcome:
+        "37 dbt models, 215 dbt tests, 167 pytest tests, and 375 PostgreSQL quality checks passed, with zero control-versus-dbt differences across dimensions, facts, and marts.",
+      narrative:
+        "A simulated e-commerce business needed a trusted analytical foundation, not another dashboard on raw transactions. Orders, items, shipments, returns, and reviews sit at different grains and observation windows, so naive joins can multiply revenue and immature return windows can understate risk. I first built a tested PostgreSQL warehouse with conformed dimensions, foundational facts, and governed marts. I then modernized the transformation layer with dbt — sources, thin staging, reusable intermediates, tests, and generated lineage — while keeping the original warehouse as a control. The candidate was accepted only after exact side-by-side reconciliation. The dataset is deterministic and synthetic; this is a portfolio demonstration of analytics-engineering and migration discipline.",
+    },
+    problem: {
+      background:
+        "Raw transactional tables were not enough for reliable commercial, customer, product, promotion, fulfillment, and retention analysis. The first implementation solved that with PostgreSQL, SQL, and Python orchestration. The next problem was introducing dbt without changing validated metric definitions, surrogate keys, maturity rules, or analytical outputs.",
+      challenges: [
+        "Orders, items, payments, shipments, returns, and reviews have different grains and cannot be joined naively",
+        "Percentages stored at one grain misstate results if they are averaged instead of recomputed from additive components",
+        "Recent purchases have incomplete return opportunity; immature rates must stay null rather than look like zero risk",
+        "Surrogate keys and Type 1 dimension behavior had to survive a transformation-layer rewrite",
+        "dbt had to match the validated control exactly rather than replace it on trust",
+      ],
+      stakeholders: [
+        "Simulated merchandising and finance users of sales, margin, and product marts",
+        "Simulated customer-analytics users of RFM, cohort, and repeat-purchase views",
+        "Analytics engineering reviewers of tests, lineage, and migration parity",
+      ],
+      successCriteria: [
+        "Governed marts for daily sales, product, customer, promotion, fulfillment, RFM, and cohorts",
+        "Exact control-versus-dbt parity for dimensions, facts, and marts",
+        "Passing dbt, pytest, and PostgreSQL data-quality suites on deterministic rebuilds",
+        "Clear synthetic-data disclosure and no causal promotion or churn claims",
+      ],
+    },
+    architecture: {
+      steps: [
+        "Python synthetic generation",
+        "PostgreSQL core (13 tables)",
+        "dbt staging",
+        "Conformed dimensions",
+        "Facts + intermediates",
+        "Governed marts",
+        "Tests, docs, analysis",
+      ],
+      sources: [
+        "Deterministic Python generation into 13 PostgreSQL core tables (customers, products, orders, items, payments, shipments, returns, reviews, and reference data)",
+        "Original analytics schema retained as the validated SQL/Python control",
+        "dbt sources declared against core; candidate objects built in analytics_dbt schemas",
+      ],
+      stack: ["Python", "PostgreSQL", "SQL", "dbt", "Jupyter", "Git"],
+      visual: {
+        src: "/ecommerce-analytics/architecture_flow.svg",
+        alt: "Flow from deterministic Python generation through PostgreSQL core, dbt staging, dimensions, facts, governed marts, and validation, with the original analytics schema retained as a side-by-side control.",
+        caption:
+          "The original warehouse stays beside the dbt DAG as a reconciliation control. No production cutover is claimed.",
+      },
+      decisions: [
+        {
+          q: "Why keep the original warehouse?",
+          a: "The SQL/Python analytics schema was already validated. dbt was accepted only after exact bidirectional row, key, type, and value parity — not after a leap-of-faith cutover.",
+        },
+        {
+          q: "Why thin staging?",
+          a: "Staging views align names and types to the 13 sources. Business grain, surrogate keys, and metric contracts live downstream so lineage stays explicit.",
+        },
+        {
+          q: "Why marts instead of a dashboard-first design?",
+          a: "Daily sales, customer RFM, cohorts, product months, promotion, and fulfillment needed reusable, tested definitions before any presentation layer. Power BI was not a completed core phase.",
+        },
+      ],
+    },
+    modeling: {
+      facts: [
+        "fact_order",
+        "fact_order_item",
+        "fact_payment",
+        "fact_shipment",
+        "fact_return",
+        "fact_review",
+      ],
+      dimensions: [
+        "dim_date",
+        "dim_customer",
+        "dim_product",
+        "dim_promotion",
+        "dim_geography",
+      ],
+      metrics: [
+        {
+          name: "Net merchandise sales",
+          definition:
+            "Item net sales after discounts and before returns, tax, and shipping. Checkout totals, payments, and refunds are related but not interchangeable.",
+        },
+        {
+          name: "Gross margin",
+          definition:
+            "Gross profit divided by net merchandise sales, recomputed from additive components rather than averaged from stored percentages.",
+        },
+        {
+          name: "Mature unit return rate",
+          definition:
+            "Completed returned units over purchased units only after a full 45-day observation window; immature cohorts stay null, not zero.",
+        },
+        {
+          name: "RFM segment",
+          definition:
+            "Descriptive recency, frequency, and monetary labels as of a configured snapshot date. Not CLV and not a churn model.",
+        },
+      ],
+      governance: [
+        "Successful activity means Completed plus Refunded orders",
+        "Configured as-of date 2026-07-31; models do not use the system clock",
+        "Promotion comparisons are observational, not lift or ROI",
+        "Zero-purchase customers remain in customer and RFM marts as No Purchase",
+        "The dataset is deterministic synthetic data at starter scale (5,000 customers, 1,000 products)",
+      ],
+      takeawaysHeading: "Technical highlights",
+      takeawaysIntro:
+        "A few modeling rules that kept the dbt migration honest against the original warehouse.",
+      takeaways: [
+        {
+          title: "Governed metric definitions",
+          body: "Weighted rates are recomputed from additive components so a monthly margin is not an average of daily percentages.",
+        },
+        {
+          title: "Return maturity",
+          body: "Product return cohorts need a complete 45-day window. Incomplete windows stay null so recent volume cannot masquerade as low risk.",
+        },
+        {
+          title: "Stable surrogate keys",
+          body: "The dbt migration preserved identity-backed key mappings and Type 1 behavior instead of reallocating keys on rebuild.",
+        },
+        {
+          title: "Side-by-side migration",
+          body: "The original warehouse remained the control while dbt was developed, tested, and reconciled to exact parity.",
+        },
+      ],
+    },
+    pipeline: {
+      ingestion: [
+        "Deterministic Python generation and load of 13 core PostgreSQL tables",
+        "Fixed seed, source window, and as-of date so rebuilds are repeatable",
+        "dbt source declarations against core; core is not a dbt-owned schema",
+      ],
+      transformations: [
+        "13 thin staging views, then five conformed dimensions and six foundational facts",
+        "Six intermediate models for shared order, item, successful-activity, return, and review context",
+        "Seven governed marts: daily sales, product monthly, customer summary, promotion monthly, fulfillment monthly, RFM, and cohort",
+      ],
+      automation: [
+        "dbt build for models and 215 tests; pytest for 167 contracts; 375 PostgreSQL data-quality checks",
+        "Controlled dimension bootstrap copies validated natural-ID to surrogate-key mappings, then durable sequences take over",
+        "Generated dbt documentation and lineage; analysis notebooks stay read-only downstream of marts",
+      ],
+      samples: [
+        {
+          language: "SQL",
+          caption: "Recompute gross margin from additive components",
+          code: `round(
+    items.gross_profit / nullif(items.net_merchandise_sales, 0), 6
+) as gross_margin_pct`,
+        },
+        {
+          language: "SQL",
+          caption: "Keep immature return rates null until the 45-day window closes",
+          code: `case when (
+    (month_start_date + interval '1 month' - interval '1 day')::date
+        + {{ var('return_maturity_days') }}
+) <= '{{ var('as_of_date') }}'::date then round(
+    coalesce(completed_returned_units, 0)::numeric
+        / nullif(units_sold, 0), 6
+) end as unit_return_rate`,
+        },
+      ],
+    },
+    analytics: {
+      deliverables: [
+        "Governed marts for commercial, customer, product, promotion, fulfillment, RFM, and cohort analysis",
+        "Phase 4 findings on value concentration, maturity-aware repeat purchase, and product economics",
+        "Selected portfolio visuals below; Jupyter notebooks remain in the public repository",
+      ],
+      notes:
+        "Headline figures use the documented starter-scale synthetic dataset. RFM is descriptive. Repeat-purchase association is not causality. Promotion analysis is observational.",
+    },
+    results: {
+      operational: [
+        "37 dbt models and 215 dbt tests passed on deterministic rebuilds",
+        "167 pytest tests and 375 PostgreSQL data-quality checks passed",
+        "Exact control-versus-dbt parity across all migrated dimensions, facts, and governed marts — zero bidirectional row-level differences",
+        "Surrogate-key mappings, types, precision, and null semantics preserved",
+      ],
+      adoption: [
+        "Portfolio demonstration for analytics engineer, data/analytics engineer, senior analyst, and BI developer roles",
+        "Public GitHub repository with dbt project, tests, and analysis notebooks",
+      ],
+      lessons: [
+        "Migration discipline is the product: keep the validated warehouse as a control until parity is proven.",
+        "Metric contracts belong in marts. Dashboards cannot repair averaged rates or immature return windows.",
+        "A minority of customers and a few categories can dominate a synthetic commercial base; that is a modeling result, not market evidence.",
+      ],
+    },
+    interactive: "ecommerce-analytics",
+  },
   {
     slug: "transit-ridership-forecast",
     title: "Machine Learning Ridership Forecast",
