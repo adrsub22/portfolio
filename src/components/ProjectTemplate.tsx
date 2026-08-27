@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { projectSectionNav } from "@/data/site";
 import type { Project } from "@/data/projects";
 import { RidershipPlanner } from "@/components/RidershipPlanner";
 import { TripPatternsDemo } from "@/components/TripPatternsDemo";
 import { EcommerceAnalytics } from "@/components/EcommerceAnalytics";
+import { OsmBusinessLocator } from "@/components/OsmBusinessLocator";
 
 function Block({
   id,
@@ -124,12 +124,9 @@ export function ProjectTemplate({ project }: { project: Project }) {
             </div>
             {project.architecture.visual && (
               <figure className="ecom-figure architecture-figure">
-                <Image
+                <img
                   src={project.architecture.visual.src}
                   alt={project.architecture.visual.alt}
-                  width={1800}
-                  height={460}
-                  unoptimized
                   className="ecom-figure-img"
                 />
                 <figcaption className="muted">
@@ -270,6 +267,9 @@ export function ProjectTemplate({ project }: { project: Project }) {
         {project.interactive === "ridership-scenario" && <RidershipPlanner />}
         {project.interactive === "trip-patterns" && <TripPatternsDemo />}
         {project.interactive === "ecommerce-analytics" && <EcommerceAnalytics />}
+        {project.interactive === "osm-business-locator" && (
+          <OsmBusinessLocator />
+        )}
       </Block>
 
       <Block id="results" n="07" title="Results & Impact">
