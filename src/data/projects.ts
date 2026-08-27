@@ -57,7 +57,11 @@ export type Project = {
   };
   repoUrl?: string;
   disclaimer?: string;
-  interactive?: "ridership-scenario" | "trip-patterns" | "ecommerce-analytics";
+  interactive?:
+    | "ridership-scenario"
+    | "trip-patterns"
+    | "ecommerce-analytics"
+    | "osm-business-locator";
 };
 
 export const projects: Project[] = [
@@ -682,6 +686,227 @@ group by trip_date, origin_bg, dest_bg, route_no;`,
       ],
     },
     interactive: "trip-patterns",
+  },
+  {
+    slug: "osm-business-locator",
+    title: "OSM Business Locator",
+    year: "2024",
+    status: "live",
+    tags: ["Python", "OpenStreetMap", "Geospatial", "Folium", "Data Automation"],
+    oneLiner:
+      "A Python CLI that turns a search polygon into a planner-ready business inventory from OpenStreetMap — Excel, GIS files, and an interactive Leaflet map.",
+    repoUrl: "https://github.com/adrsub22/osm-business-locator",
+    disclaimer:
+      "Results are derived from OpenStreetMap and are licensed under ODbL. The inventory is only as complete as OSM tagging; it is not a licensed business registry. Local filesystem paths from the original machine are not published here.",
+    summary: {
+      problem:
+        "Planners needed a repeatable way to inventory businesses and destinations inside a study polygon without paying for a proprietary registry or redrawing the same Overpass pull by hand.",
+      who: "Service planning, GIS, and anyone who needs a first-cut land-use inventory inside a boundary.",
+      solution:
+        "A config-driven Python package queries Overpass via OSMnx, filters and classifies named OSM features, assigns them to polygons with explicit overlap rules, and writes Excel, CSV, GeoPackage, and a Leaflet map.",
+      outcome:
+        "One published run returned 317 named locations across 15 planner categories, including 16 industrial employment centers, with OSM attribution retained on every record.",
+      narrative:
+        "A study area is often already sitting in a shapefile, GeoJSON, or KML. The missing piece is a current list of shops, offices, schools, clinics, and named industrial sites inside it — something a planner can open in Excel or drop into GIS without another ad-hoc Overpass notebook. OSM Business Locator takes that polygon, queries OpenStreetMap, keeps named in-scope destinations, maps raw tags onto planner categories, and assigns each feature to a boundary using overlap thresholds rather than a careless centroid. Outputs are an Excel workbook with summaries and a data dictionary, GIS-ready CSVs, a GeoPackage, and the Leaflet map embedded below. The earlier single-notebook workflow is now an installable CLI whose settings live in a config object, so machine-specific paths are not baked into the code. This page shows one run against a set of service-area polygons.",
+    },
+    problem: {
+      background:
+        "Proprietary business lists are expensive, incomplete in their own ways, and often lag. OpenStreetMap is public, spatially explicit, and already used in planning work — but a raw Overpass dump is not an inventory. Tags are inconsistent, industrial buildings are often unnamed sheds, large parcels only nick a study area, and the people who need the file still want Excel plus a map. The job was to turn a boundary layer into those deliverables without leaving hardcoded local paths in the pipeline.",
+      challenges: [
+        "OSM tags do not map one-to-one onto planner language (shop=yes vs. a grocery, amenity=fuel vs. automotive)",
+        "Industrial landuse and warehouse buildings are noisy unless a real employer/site name is present",
+        "A large plant can sit mostly outside a study polygon and still matter if enough of the site is inside",
+        "Multipart boundaries and overlapping service areas need explicit assignment rules, not a silent centroid",
+        "The original notebook hardcoded machine-specific paths; the rewrite had to be rerunnable as a CLI",
+      ],
+      stakeholders: [
+        "Service planning and land-use staff who need a first-cut inventory inside a study area",
+        "GIS users who want points, original geometries, and the search polygon in one GeoPackage",
+        "Analysts who will open Excel, filter by category, and export a subset from the map",
+      ],
+      successCriteria: [
+        "One command from a polygon file to Excel, CSV, GeoPackage, and an interactive map",
+        "Planner categories instead of raw OSM keys in the delivered inventory",
+        "Documented overlap rules, edge-review flags, and duplicate flags rather than silent drops",
+        "OpenStreetMap attribution and ODbL license carried on every exported record",
+      ],
+    },
+    architecture: {
+      steps: [
+        "Load search polygon",
+        "Query Overpass via OSMnx",
+        "Filter and classify",
+        "Assign to boundaries",
+        "Export Excel / CSV / GPKG",
+        "Leaflet map",
+      ],
+      sources: [
+        "Caller-supplied boundary layer (shapefile, GeoJSON, GeoPackage, KML/KMZ, or zipped shapefile)",
+        "OpenStreetMap features intersecting the search polygon, via the Overpass API through OSMnx",
+      ],
+      stack: [
+        "Python",
+        "GeoPandas",
+        "OSMnx",
+        "Shapely",
+        "Folium",
+        "OpenPyXL",
+        "GeoPackage",
+      ],
+      decisions: [
+        {
+          q: "Why OpenStreetMap instead of a paid registry?",
+          a: "OSM is public, spatially explicit, and redistributable under ODbL with attribution. Completeness follows tagging, which the disclaimer states; the pipeline does not pretend to be a licensed business list.",
+        },
+        {
+          q: "Why a package and CLI instead of a notebook?",
+          a: "The notebook worked once on one machine. A PipelineConfig dataclass and osm-business-locator console script make every overlap rule, tag filter, and output flag an argument, so paths and defaults are not hardcoded.",
+        },
+        {
+          q: "Why overlap rules instead of centroids?",
+          a: "Industrial parcels and campus polygons are large. A centroid can miss the study area even when thousands of square meters sit inside it. The default keeps a feature at 25% overlap, or at 5% if at least 5,000 m² overlap, and flags edge cases below 50% for review.",
+        },
+      ],
+      visual: {
+        src: "/osm-business-locator/architecture_flow.svg",
+        alt: "Flow from loading a search polygon, querying OpenStreetMap, filtering and classifying features, assigning records to boundaries, exporting files, and generating a Leaflet map.",
+        caption:
+          "Config and CLI flags replace hardcoded machine paths. This page embeds one published run: 317 named locations inside three search polygons.",
+      },
+    },
+    modeling: {
+      facts: [
+        "One inventory row per named OSM location assigned to a boundary (this run: 317 rows; overlap mode all, no multi-boundary duplicates)",
+      ],
+      dimensions: [
+        "Planner category and subcategory derived from OSM tags",
+        "Boundary name / ID from the input polygon attributes",
+        "OSM element type and ID, with a stable Business_Record_ID and OSM URL",
+      ],
+      metrics: [
+        {
+          name: "Location count",
+          definition:
+            "Named in-scope OSM features after tag filters; unnamed points are dropped unless the include-unnamed flag is set.",
+        },
+        {
+          name: "Overlap percent / area",
+          definition:
+            "Share and square meters of a polygonal OSM feature that sit inside the assigned boundary, used for the 25% / large-site / edge-review rules.",
+        },
+        {
+          name: "Industrial employment center",
+          definition:
+            "Named industrial, warehouse, works, or logistics sites that pass the industrial-identity filter — 16 in this run, also written to a breakout CSV and worksheet.",
+        },
+      ],
+      governance: [
+        "Every row carries Source = OpenStreetMap contributors and License = Open Database License (ODbL)",
+        "Query_Date_UTC stamps the Overpass pull on every exported row",
+        "Potential_Duplicate flags same-name records at the same rounded coordinate instead of deleting them",
+        "Boundary_Edge_Review flags assignments with overlap below 50% (3 records in this run)",
+      ],
+      takeawaysHeading: "How the inventory is structured",
+      takeawaysIntro:
+        "These are the rules that turn OSM tags into a planner-ready table, not a statistical model.",
+      takeaways: [
+        {
+          title: "Planner categories, not raw tags",
+          body: "shop, amenity, office, healthcare, tourism, and industrial keys are mapped onto Food and Beverage, Retail, Education, Industrial Employment Center, and the rest so a non-GIS user can filter the workbook.",
+        },
+        {
+          title: "Named industrial sites only",
+          body: "Generic labels such as Building or Warehouse are not treated as employers. A plant enters the inventory when a name, brand, operator, or owner is present.",
+        },
+        {
+          title: "Assignment is a rule, not a centroid",
+          body: "Points must sit in the polygon. Areas need 25% overlap, or 5% with at least 5,000 m² for large sites. Weak overlaps stay in the file with an edge-review flag.",
+        },
+        {
+          title: "Provenance travels with the row",
+          body: "OSM URL, element id, query timestamp, source, and license columns mean the Excel file can be redistributed without losing attribution.",
+        },
+      ],
+    },
+    pipeline: {
+      ingestion: [
+        "Read the caller’s boundary file with whichever GDAL/OGR drivers are available",
+        "Optionally buffer, split multipart parts, and prompt for a boundary-id field when several candidates exist",
+        "Query Overpass through OSMnx features_from_polygon using OR-combined default tags (shop, office, amenity, industrial, and related keys)",
+      ],
+      transformations: [
+        "Drop inactive and out-of-scope tags; keep named businesses, amenities, and industrial sites with a real identity",
+        "Classify into planner categories and subcategories; assemble address, phone, website, and brand from OSM fields",
+        "Build a representative point inside polygonal geometries; assign to boundaries with overlap and large-site rules",
+        "Flag potential duplicates and edge-review records without deleting them",
+      ],
+      automation: [
+        "Installable osm-business-locator console script; every former notebook setting is a CLI flag",
+        "PipelineConfig holds input path, overlap thresholds, tag dict, and which outputs to write — no machine-specific paths in code",
+        "Default output folder is created next to the input file when one is not passed explicitly",
+      ],
+      samples: [
+        {
+          language: "Python",
+          caption: "Overpass query through OSMnx, clipped to the search polygon",
+          code: `ox.settings.use_cache = use_cache
+ox.settings.requests_timeout = timeout_seconds
+result = ox.features_from_polygon(polygon, tags)
+result = result.reset_index().to_crs("EPSG:4326")`,
+        },
+        {
+          language: "Python",
+          caption: "Map OSM tags onto planner categories",
+          code: `if healthcare or amenity in HEALTH_AMENITIES:
+    value = healthcare or amenity
+    key = "healthcare" if healthcare else "amenity"
+    return "Medical and Healthcare", value, key
+if amenity in FOOD_AMENITIES:
+    return "Food and Beverage", amenity, "amenity"
+if shop in GROCERY_SHOPS:
+    return "Grocery and Convenience", shop, "shop"`,
+        },
+        {
+          language: "Python",
+          caption: "Keep a polygon if enough of the site sits inside the study area",
+          code: `overlap_percent = (overlap_area / feature_area) * 100
+standard_rule = overlap_percent >= 25
+large_site_rule = overlap_area >= 5_000 and overlap_percent >= 5
+qualifies = standard_rule or large_site_rule
+edge_review = qualifies and overlap_percent < 50`,
+        },
+      ],
+    },
+    analytics: {
+      deliverables: [
+        "Excel workbook: full inventory, industrial breakout, summaries, and a data dictionary",
+        "GIS-ready CSVs (full inventory and industrial-only) with latitude and longitude",
+        "GeoPackage with points, industrial employment centers, original geometries, and the search area",
+        "Interactive Leaflet map with a checkbox layer per category and CSV/KML/KMZ/GeoJSON/shapefile export",
+      ],
+      notes:
+        "The map below is the pipeline’s HTML export for this run, not a rebuilt demo. Three service-area polygons contained the 317 locations. Food and beverage (71), retail (42), and automotive (35) were the largest categories. Completeness is OSM’s, not a commercial registry’s.",
+    },
+    results: {
+      operational: [
+        "A polygon file is enough to refresh the inventory; the Overpass pull and exports are one command",
+        "Planners can filter Excel by category; GIS users get points and original polygons in the same GeoPackage",
+        "Industrial employment centers are a first-class breakout, not mixed into generic shops",
+        "Edge-review and duplicate flags keep questionable records visible instead of silently dropped",
+      ],
+      adoption: [
+        "Service planning / land-use inventory work",
+        "GIS overlay and map export",
+        "Spreadsheet review of named destinations",
+      ],
+      lessons: [
+        "Do not hardcode local paths; a config object is what makes the pipeline portable.",
+        "Raw OSM tags are not a business list — classification and named-site filters are the product.",
+        "Large parcels need overlap rules; centroids will miss plants that still sit in the study area.",
+        "Carry OSM attribution on every row if the files will leave your machine.",
+      ],
+    },
+    interactive: "osm-business-locator",
   },
 ];
 

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="460" viewBox="0 0 1800 460" role="img" aria-labelledby="title desc">
+  <title id="title">OSM Business Locator: polygon in, inventory out</title>
+  <desc id="desc">A search polygon is loaded, OpenStreetMap is queried through Overpass, features are filtered and classified, records are assigned to boundary polygons, tabular and GIS files are exported, and an interactive Leaflet map is generated.</desc>
+  <defs>
+    <marker id="osm-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#8a8274"/>
+    </marker>
+  </defs>
+
+  <rect width="1800" height="460" fill="#f3eee4"/>
+  <text x="900" y="48" text-anchor="middle" font-family="system-ui, sans-serif" font-size="29" font-weight="700" fill="#1c1915">OSM Business Locator: polygon in, inventory out</text>
+
+  <g transform="translate(28 104)">
+    <rect width="250" height="150" rx="14" fill="#fffdf8" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Load search area</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Shapefile, GeoJSON, GPKG</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">KML / KMZ, zipped shapefile</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Optional buffer</text>
+  </g>
+  <path d="M286 179 H320" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#osm-arrow)"/>
+
+  <g transform="translate(328 104)">
+    <rect width="250" height="150" rx="14" fill="#e8f1ec" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Query Overpass</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">OSMnx features_from_polygon</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">OR-combined OSM tags</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">WGS84 output</text>
+  </g>
+  <path d="M586 179 H620" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#osm-arrow)"/>
+
+  <g transform="translate(628 104)">
+    <rect width="250" height="150" rx="14" fill="#dce9dc" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Filter and classify</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Named businesses only</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Planner categories</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Industrial identity rules</text>
+  </g>
+  <path d="M886 179 H920" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#osm-arrow)"/>
+
+  <g transform="translate(928 104)">
+    <rect width="250" height="150" rx="14" fill="#e4ece6" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Assign to polygons</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">25% overlap default</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Large-site 5% / 5,000 sqm</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Edge-review flag at 50%</text>
+  </g>
+  <path d="M1186 179 H1220" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#osm-arrow)"/>
+
+  <g transform="translate(1228 104)">
+    <rect width="250" height="150" rx="14" fill="#faecd2" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Export files</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Excel + data dictionary</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">CSV with lat / lon</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">GeoPackage layers</text>
+  </g>
+  <path d="M1486 179 H1520" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#osm-arrow)"/>
+
+  <g transform="translate(1528 104)">
+    <rect width="244" height="150" rx="14" fill="#eee5f5" stroke="#2f6f62" stroke-width="2"/>
+    <text x="122" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Leaflet map</text>
+    <text x="122" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Checkbox by category</text>
+    <text x="122" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">CSV / KML / GeoJSON</text>
+    <text x="122" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Shapefile / KMZ export</text>
+  </g>
+
+  <text x="900" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Config object and CLI flags replace hardcoded machine paths. Results retain OpenStreetMap attribution and the Open Database License.</text>
+  <text x="900" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">This page embeds one published run: 317 named locations inside three search polygons.</text>
+</svg>

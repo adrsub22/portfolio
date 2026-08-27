@@ -1037,6 +1037,73 @@ input[type="range"] {
   z-index: 0;
 }
 
+.osm-demo {
+  margin-top: 20px;
+}
+
+.osm-map-actions {
+  margin: 16px 0 8px;
+}
+
+.osm-map-actions a {
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.osm-map-actions a:hover {
+  color: var(--accent);
+}
+
+.osm-map {
+  display: block;
+  width: 100%;
+  height: 640px;
+  border: 1px solid var(--line);
+  background: #e8e1d4;
+  margin: 0;
+}
+
+.osm-map-credit {
+  margin-top: 8px;
+}
+
+.osm-cats {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.osm-cat {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr 2.5rem;
+  gap: 10px;
+  align-items: center;
+}
+
+.osm-cat-name {
+  font-size: 13px;
+}
+
+.osm-cat-track {
+  display: block;
+  height: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.osm-cat-track i {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+}
+
+.osm-cat-count {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  text-align: right;
+}
+
 .trip-map-loading {
   display: grid;
   place-items: center;
@@ -1196,7 +1263,8 @@ input[type="range"] {
   .project-row,
   .resume-strengths,
   .resume-education,
-  .adopt-row {
+  .adopt-row,
+  .osm-cat {
     grid-template-columns: 1fr;
   }
 
@@ -1215,5 +1283,9 @@ input[type="range"] {
 
   .about-hero {
     justify-items: start;
+  }
+
+  .osm-map {
+    height: 480px;
   }
 }
