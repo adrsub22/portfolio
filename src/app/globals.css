@@ -1002,6 +1002,31 @@ input[type="range"] {
   overflow-x: auto;
 }
 
+.architecture-figure-link {
+  display: block;
+  cursor: zoom-in;
+}
+
+.architecture-figure-link:hover .ecom-figure-img,
+.architecture-figure-link:focus-visible .ecom-figure-img {
+  border-color: var(--accent-2);
+}
+
+.architecture-figure figcaption {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.architecture-figure figcaption a {
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.architecture-figure figcaption a:hover {
+  color: var(--accent);
+}
+
 .trip-demo {
   margin-top: 16px;
 }

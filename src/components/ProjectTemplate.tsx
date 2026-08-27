@@ -124,13 +124,28 @@ export function ProjectTemplate({ project }: { project: Project }) {
             </div>
             {project.architecture.visual && (
               <figure className="ecom-figure architecture-figure">
-                <img
-                  src={project.architecture.visual.src}
-                  alt={project.architecture.visual.alt}
-                  className="ecom-figure-img"
-                />
+                <a
+                  className="architecture-figure-link"
+                  href={project.architecture.visual.src}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open architecture diagram full size"
+                >
+                  <img
+                    src={project.architecture.visual.src}
+                    alt={project.architecture.visual.alt}
+                    className="ecom-figure-img"
+                  />
+                </a>
                 <figcaption className="muted">
-                  {project.architecture.visual.caption}
+                  {project.architecture.visual.caption}{" "}
+                  <a
+                    href={project.architecture.visual.src}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open full size
+                  </a>
                 </figcaption>
               </figure>
             )}
