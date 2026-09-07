@@ -1093,6 +1093,187 @@ input[type="range"] {
   margin-top: 8px;
 }
 
+.gtfs-demo {
+  margin-top: 20px;
+}
+
+.gtfs-highlights {
+  margin: 16px 0 8px;
+  padding-left: 1.15rem;
+}
+
+.gtfs-highlights li {
+  margin: 4px 0;
+}
+
+.gtfs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: flex-end;
+  margin: 12px 0;
+}
+
+.gtfs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gtfs-chips button,
+.gtfs-reset {
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  cursor: pointer;
+}
+
+.gtfs-chips button.active {
+  border-color: var(--ink);
+  background: var(--code);
+  color: #f3eee4;
+}
+
+.gtfs-toolbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.gtfs-toolbar select {
+  font: inherit;
+  font-size: 13px;
+  min-width: 220px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+}
+
+.gtfs-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px !important;
+}
+
+.gtfs-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 12px;
+  align-items: start;
+}
+
+.gtfs-map {
+  width: 100%;
+  height: 420px;
+  border: 1px solid var(--line);
+  background: #e8e1d4;
+  margin: 0;
+  z-index: 0;
+}
+
+.gtfs-map-loading {
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.gtfs-route-list {
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+}
+
+.gtfs-route-list button {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+}
+
+.gtfs-route-list button span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gtfs-route-list button.active {
+  background: var(--paper-2);
+}
+
+.gtfs-badge {
+  display: inline-block;
+  align-self: center;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+}
+
+.gtfs-badge.added {
+  background: #d8f3e3;
+}
+
+.gtfs-badge.removed {
+  background: #f8d7d7;
+}
+
+.gtfs-badge.changed,
+.gtfs-badge.moved {
+  background: #fbe8c8;
+}
+
+.gtfs-badge.unchanged {
+  background: #eef2f5;
+}
+
+.gtfs-table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+  border: 1px solid var(--line);
+}
+
+.gtfs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.gtfs-table th,
+.gtfs-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.gtfs-table th {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: #fffdf8;
+}
+
+.gtfs-table tr.active {
+  background: var(--paper-2);
+}
+
 .osm-cats {
   display: grid;
   gap: 8px;
@@ -1312,5 +1493,15 @@ input[type="range"] {
 
   .osm-map {
     height: 480px;
+  }
+
+  .gtfs-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .gtfs-map,
+  .gtfs-route-list {
+    height: 320px;
+    max-height: 320px;
   }
 }

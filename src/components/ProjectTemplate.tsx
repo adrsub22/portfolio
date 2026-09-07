@@ -4,6 +4,7 @@ import { RidershipPlanner } from "@/components/RidershipPlanner";
 import { TripPatternsDemo } from "@/components/TripPatternsDemo";
 import { EcommerceAnalytics } from "@/components/EcommerceAnalytics";
 import { OsmBusinessLocator } from "@/components/OsmBusinessLocator";
+import { GtfsDifference } from "@/components/GtfsDifference";
 
 function Block({
   id,
@@ -285,6 +286,7 @@ export function ProjectTemplate({ project }: { project: Project }) {
         {project.interactive === "osm-business-locator" && (
           <OsmBusinessLocator />
         )}
+        {project.interactive === "gtfs-difference" && <GtfsDifference />}
       </Block>
 
       <Block id="results" n="07" title="Results & Impact">

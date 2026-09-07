@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="460" viewBox="0 0 1800 460" role="img" aria-labelledby="title desc">
+  <title id="title">GTFS Difference: two feeds in, map and Excel out</title>
+  <desc id="desc">Two GTFS zip files are selected, tables are loaded from each zip, trips and shapes are indexed, entities are compared, an Excel workbook is written, and an OpenStreetMap viewer shows the diffs.</desc>
+  <defs>
+    <marker id="gtfs-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#8a8274"/>
+    </marker>
+  </defs>
+
+  <rect width="1800" height="460" fill="#f3eee4"/>
+  <text x="900" y="48" text-anchor="middle" font-family="system-ui, sans-serif" font-size="29" font-weight="700" fill="#1c1915">GTFS Difference: two feeds in, map and Excel out</text>
+
+  <g transform="translate(28 104)">
+    <rect width="250" height="150" rx="14" fill="#fffdf8" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Choose two GTFS zips</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Command-prompt feed picker</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">feed_info version + dates</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Feed A before, Feed B after</text>
+  </g>
+  <path d="M286 179 H320" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#gtfs-arrow)"/>
+
+  <g transform="translate(328 104)">
+    <rect width="250" height="150" rx="14" fill="#e8f1ec" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Load feed tables</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Read txt files from the zip</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">routes, stops, trips, shapes</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">calendar, transfers, fares</text>
+  </g>
+  <path d="M586 179 H620" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#gtfs-arrow)"/>
+
+  <g transform="translate(628 104)">
+    <rect width="250" height="150" rx="14" fill="#dce9dc" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Index service</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Trips by route and day type</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Stop patterns and headsigns</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Shape polylines</text>
+  </g>
+  <path d="M886 179 H920" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#gtfs-arrow)"/>
+
+  <g transform="translate(928 104)">
+    <rect width="250" height="150" rx="14" fill="#e4ece6" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Diff entities</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Added / removed / changed</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Stops moved e 15 m</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Alignment delta e 60 m</text>
+  </g>
+  <path d="M1186 179 H1220" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#gtfs-arrow)"/>
+
+  <g transform="translate(1228 104)">
+    <rect width="250" height="150" rx="14" fill="#faecd2" stroke="#2f6f62" stroke-width="2"/>
+    <text x="125" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">Write Excel</text>
+    <text x="125" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Summary + status colors</text>
+    <text x="125" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Routes, stops, service</text>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Calendar, transfers, fares</text>
+  </g>
+  <path d="M1486 179 H1520" fill="none" stroke="#8a8274" stroke-width="3" marker-end="url(#gtfs-arrow)"/>
+
+  <g transform="translate(1528 104)">
+    <rect width="244" height="150" rx="14" fill="#eee5f5" stroke="#2f6f62" stroke-width="2"/>
+    <text x="122" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1c1915">OSM map + tables</text>
+    <text x="122" y="76" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Feed A dashed, Feed B solid</text>
+    <text x="122" y="99" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Status chips and route list</text>
+    <text x="122" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Local Flask viewer</text>
+  </g>
+
+  <text x="900" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">Feed choice stays in the command prompt. The browser is for the map, tables, and Excel download.</text>
+  <text x="900" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#5c564c">This page embeds one public VIA comparison: May 2026 versus August 2026.</text>
+</svg>
