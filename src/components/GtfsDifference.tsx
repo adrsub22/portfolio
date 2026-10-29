@@ -77,13 +77,19 @@ export function GtfsDifference() {
     };
   }, []);
 
+  const routeStatusById = useMemo(() => {
+    const lookup: Record<string, GtfsStatus> = {};
+    if (!data) return lookup;
+    for (const route of data.tables.routes) lookup[route.id] = route.status;
+    return lookup;
+  }, [data]);
+
   const visibleRoutes = useMemo(() => {
     if (!data) return [];
     return data.tables.routes.filter((row) => {
       if (routeId && row.id !== routeId) return false;
-      const view = row.map_status || row.status;
       if (routeId && status === "all") return true;
-      return matchesStatus(view, status);
+      return matchesStatus(row.status, status);
     });
   }, [data, routeId, status]);
 
@@ -131,10 +137,10 @@ export function GtfsDifference() {
         {leftName} / {rightName}
       </h3>
       <p className="muted">
-        VIA Metropolitan Transit published both feeds. Feed A is dashed; Feed B
-        is solid. Click a route on the map or in the list to isolate it. This
-        page embeds the comparison snapshot — the local Flask app is what
-        writes the Excel and lets you pick any other pair.
+        VIA Metropolitan Transit published both feeds. Route badges follow
+        routes.txt (3 diffs on this pair). Trip counts, stop patterns, and
+        alignments are on the Service tab. Feed A is dashed; Feed B is solid.
+        Click a route on the map or in the list to isolate it.
       </p>
 
       <div className="kpi-row kpi-row-4">
@@ -255,6 +261,7 @@ export function GtfsDifference() {
           geo={data.geo}
           status={status}
           routeId={routeId}
+          routeStatusById={routeStatusById}
           showRoutes={showRoutes}
           showStops={showStops}
           showLeft={showLeft}
@@ -265,25 +272,22 @@ export function GtfsDifference() {
           {visibleRoutes.length === 0 ? (
             <p className="muted">No routes match the current filters.</p>
           ) : (
-            visibleRoutes.map((route) => {
-              const view = route.map_status || route.status;
-              return (
-                <button
-                  key={route.id}
-                  type="button"
-                  className={route.id === routeId ? "active" : undefined}
-                  onClick={() =>
-                    setRouteId((current) => (current === route.id ? "" : route.id))
-                  }
-                >
-                  <span>
-                    <strong>{route.short_name}</strong>
-                    <span className="muted">{route.long_name}</span>
-                  </span>
-                  <span className={`gtfs-badge ${view}`}>{view}</span>
-                </button>
-              );
-            })
+            visibleRoutes.map((route) => (
+              <button
+                key={route.id}
+                type="button"
+                className={route.id === routeId ? "active" : undefined}
+                onClick={() =>
+                  setRouteId((current) => (current === route.id ? "" : route.id))
+                }
+              >
+                <span>
+                  <strong>{route.short_name}</strong>
+                  <span className="muted">{route.long_name}</span>
+                </span>
+                <span className={`gtfs-badge ${route.status}`}>{route.status}</span>
+              </button>
+            ))
           )}
         </div>
       </div>
@@ -323,8 +327,8 @@ export function GtfsDifference() {
                   className={route.id === routeId ? "active" : undefined}
                 >
                   <td>
-                    <span className={`gtfs-badge ${route.map_status || route.status}`}>
-                      {route.map_status || route.status}
+                    <span className={`gtfs-badge ${route.status}`}>
+                      {route.status}
                     </span>
                   </td>
                   <td>{route.id}</td>

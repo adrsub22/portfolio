@@ -1032,7 +1032,7 @@ edge_review = qualifies and overlap_percent < 50`,
       takeaways: [
         {
           title: "Attribute change and service change are separate",
-          body: "Route 62 and 89 only changed route_color in routes.txt, but their service rows also show large weekday trip increases. The map status combines both so a color-only edit and a trip-count edit do not look the same.",
+          body: "Route 62 and 89 only changed route_color in routes.txt, but their service rows also show large weekday trip increases. The Routes table follows routes.txt; trip counts, stop patterns, and alignments stay on the Service tab so a color-only edit and a trip-count edit do not look the same.",
         },
         {
           title: "Moved is not removed-plus-added",

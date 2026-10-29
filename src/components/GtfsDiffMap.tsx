@@ -19,6 +19,7 @@ type Props = {
   geo: GtfsGeo;
   status: GtfsStatus | "all";
   routeId: string;
+  routeStatusById: Record<string, GtfsStatus>;
   showRoutes: boolean;
   showStops: boolean;
   showLeft: boolean;
@@ -36,18 +37,20 @@ function matchesFeature(
   props: { id?: string; routes?: string[]; status: string },
   status: GtfsStatus | "all",
   routeId: string,
+  featureStatus: string,
 ) {
   if (routeId && props.id !== routeId && !(props.routes || []).includes(routeId)) {
     return false;
   }
   if (routeId && status === "all") return true;
-  return matchesStatus(props.status, status);
+  return matchesStatus(featureStatus, status);
 }
 
 export function GtfsDiffMap({
   geo,
   status,
   routeId,
+  routeStatusById,
   showRoutes,
   showStops,
   showLeft,
@@ -84,7 +87,8 @@ export function GtfsDiffMap({
     if (showRoutes) {
       for (const feature of geo.routes.features) {
         const p = feature.properties;
-        if (!matchesFeature(p, status, routeId)) continue;
+        const routeStatus = routeStatusById[p.id] ?? "unchanged";
+        if (!matchesFeature(p, status, routeId, routeStatus)) continue;
         if (p.feed === "left" && !showLeft) continue;
         if (p.feed === "right" && !showRight) continue;
         const coords = feature.geometry.coordinates.map(
@@ -92,21 +96,21 @@ export function GtfsDiffMap({
         );
         if (coords.length < 2) continue;
         const color =
-          p.status === "changed"
+          routeStatus === "changed"
             ? p.feed === "left"
               ? COLORS.left
               : COLORS.right
-            : COLORS[p.status] || COLORS.unchanged;
+            : COLORS[routeStatus] || COLORS.unchanged;
         const line = L.polyline(coords, {
           color,
-          weight: p.status === "unchanged" ? 3 : 4,
+          weight: routeStatus === "unchanged" ? 3 : 4,
           opacity: 0.92,
           dashArray: p.feed === "left" ? "7 6" : undefined,
         })
           .bindPopup(
             `<strong>Route ${p.short_name}</strong><br/>${p.long_name}${
               p.destination ? `<br/>Destination: ${p.destination}` : ""
-            }<br/>${p.status} · ${p.feed === "left" ? "Feed A (dashed)" : "Feed B (solid)"}`,
+            }<br/>${routeStatus} · ${p.feed === "left" ? "Feed A (dashed)" : "Feed B (solid)"}`,
           )
           .on("click", () => onSelectRef.current(p.id));
         line.addTo(layer);
@@ -117,7 +121,7 @@ export function GtfsDiffMap({
     if (showStops) {
       for (const feature of geo.moves.features) {
         const p = feature.properties;
-        if (!matchesFeature(p, status, routeId)) continue;
+        if (!matchesFeature(p, status, routeId, p.status)) continue;
         const coords = feature.geometry.coordinates.map(
           ([lng, lat]) => [lat, lng] as L.LatLngTuple,
         );
@@ -130,7 +134,7 @@ export function GtfsDiffMap({
 
       for (const feature of geo.stops.features) {
         const p = feature.properties;
-        if (!matchesFeature(p, status, routeId)) continue;
+        if (!matchesFeature(p, status, routeId, p.status)) continue;
         if (p.feed === "left" && !showLeft) continue;
         if (p.feed === "right" && !showRight) continue;
         const [lng, lat] = feature.geometry.coordinates;
@@ -158,7 +162,7 @@ export function GtfsDiffMap({
     return () => {
       layer.remove();
     };
-  }, [geo, status, routeId, showRoutes, showStops, showLeft, showRight]);
+  }, [geo, status, routeId, routeStatusById, showRoutes, showStops, showLeft, showRight]);
 
   useEffect(() => {
     return () => {
